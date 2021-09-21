@@ -34,7 +34,8 @@ namespace DogGo.Controllers
 
             if (walker == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             return View(walker);
