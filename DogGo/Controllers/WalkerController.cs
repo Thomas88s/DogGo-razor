@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DogGo.Repositories;
 using DogGo.Models;
 
@@ -27,6 +24,7 @@ namespace DogGo.Controllers
         {
             _walkerRepo = walkerRepository;
         }
+
         // GET: Walkers/Details/5
         public ActionResult Details(int id)
         {
