@@ -50,7 +50,7 @@ namespace DogGo.Repositories
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId"))
                         };
 
-                        owner.Add(owner);
+                        owners.Add(owner);
                     }
 
                     reader.Close();
@@ -68,7 +68,7 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                         SELECT Id, [Name], Email, Address, Phone, NeighborhoodId
+                        SELECT Id, [Name], Email, Address, Phone, NeighborhoodId
                         FROM Owner
                         WHERE Id = @id
                     ";
@@ -88,12 +88,19 @@ namespace DogGo.Repositories
                             Phone = reader.GetString(reader.GetOrdinal("Phone")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId"))
                         };
+
+                        reader.Close();
+                        return owner;
+                    }
+
+                    else
+                    {
+                        reader.Close();
+                        return null;
                     }
                 }
             }
         }
-
-
 
     }
 }
