@@ -90,14 +90,21 @@ namespace DogGo.Controllers
 
         public ActionResult Edit(int id)
         {
+            List<Neighborhood> neighborhoods = _neighborhoodRepo.GetAll();
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Neighborhoods = neighborhoods
+
+            };
             Owner owner = _ownerRepo.GetOwnerById(id);
 
             if (owner == null)
-            {
-                return NotFound();
-            }
-
-            return View(owner);
+                {
+                    return NotFound();
+                }
+            
+            return View(vm);
         }
 
         [HttpPost]
