@@ -31,8 +31,8 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT Id, Date, Duration, WalkerId, DogId
-                        FROM Walker
+                        SELECT Walks.Id, Date, Duration, WalkerId, DogId, Dog.Name AS DogName
+                        FROM Walks LEFT JOIN Dog ON DogId = Dog.Id
                     ";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -42,11 +42,12 @@ namespace DogGo.Repositories
                     {
                         Walk walk = new Walk
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Id = reader.GetInt32(reader.GetOrdinal("Walks.Id")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
                             DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
+                            DogName = reader.GetString(reader.GetOrdinal("DogName")),
                         };
 
                         walks.Add(walk);
@@ -67,9 +68,9 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT Id, Date, Duration, WalkerId, DogId
-                        FROM Walker
-                        WHERE Id = @id
+                        SELECT Walks.Id, Date, Duration, WalkerId, DogId, Dog.Name AS DogName
+                        FROM Walks LEFT JOIN Dog ON DogId = Dog.Id
+                        WHERE Walk.Id = @id
                     ";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -80,11 +81,12 @@ namespace DogGo.Repositories
                     {
                         Walk walk = new Walk
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Id = reader.GetInt32(reader.GetOrdinal("Walks.Id")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
-                            DogId = reader.GetInt32(reader.GetOrdinal("DogId"))
+                            DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
+                            DogName = reader.GetString(reader.GetOrdinal("DogName"))
                         };
 
                         reader.Close();
@@ -108,8 +110,8 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT Id, Date, Duration, WalkerId, DogId
-                FROM Walk
+                SELECT Walks.Id, Date, Duration, WalkerId, DogId, Dog.Name AS DogName
+                FROM Walks LEFT JOIN Dog ON DogId = Dog.Id
                 WHERE WalkerId = @walkerId
             ";
 
@@ -117,7 +119,7 @@ namespace DogGo.Repositories
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    List<Walk> dogs = new List<Walk>();
+                    List<Walk> walks = new List<Walk>();
 
                     while (reader.Read())
                     {
@@ -127,7 +129,8 @@ namespace DogGo.Repositories
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
-                            DogId = reader.GetInt32(reader.GetOrdinal("DogId"))
+                            DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
+                            DogName = reader.GetString(reader.GetOrdinal("DogName"))
                         };
 
                         // Check if optional columns are null

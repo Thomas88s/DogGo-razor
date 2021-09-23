@@ -13,5 +13,18 @@ namespace DogGo.Models
         public string NeighborhoodName { get; set; }
         public string ImageUrl { get; set; }
         public Neighborhood Neighborhood { get; set; }
+        public int WalkDuration { get; set; }
+
+        //public int TotalWalkTime
+        //{
+        //    set
+        //    {
+        //        foreach (walk in WalkDuration)
+        //        {
+        //            TotalWalkTime = WalkDuration + WalkDuration;
+        //        }
+        //    }
+        //}
+  
     }
 }
