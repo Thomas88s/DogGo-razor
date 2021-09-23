@@ -31,8 +31,9 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Neighborhood.Name AS NeighborhoodName
+                        SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Duration AS WalkDuration, Neighborhood.Name AS NeighborhoodName
                         FROM Walker Left JOIN Neighborhood ON Walker.NeighborhoodId = Neighborhood.Id
+                        JOIN Walks ON Walks.WalkerId = Walker.Id
                     ";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -46,7 +47,8 @@ namespace DogGo.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                            NeighborhoodName = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
+                            NeighborhoodName = reader.GetString(reader.GetOrdinal("NeighborhoodName")),
+                            WalkDuration = reader.GetInt32(reader.GetOrdinal("WalkDuration"))
                         };
 
                         walkers.Add(walker);
@@ -67,8 +69,9 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Neighborhood.Name AS NeighborhoodName
+                        SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Duration AS WalkDuration, Neighborhood.Name AS NeighborhoodName
                         FROM Walker Left JOIN Neighborhood ON Walker.NeighborhoodId = Neighborhood.Id
+                        JOIN Walks ON Walks.WalkerId = Walker.Id
                         WHERE Walker.Id = @id
                     ";
 
@@ -85,6 +88,7 @@ namespace DogGo.Repositories
                             ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
                             NeighborhoodName = reader.GetString(reader.GetOrdinal("NeighborhoodName")),
+                            WalkDuration = reader.GetInt32(reader.GetOrdinal("WalkDuration"))
                         };
 
                         reader.Close();
@@ -107,9 +111,10 @@ namespace DogGo.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Neighborhood.Name AS NeighborhoodName
-                FROM Walker LEFT JOIN Neighborhood ON Walker.NeighborhoodId = Neighborhood.Id
-                WHERE NeighborhoodId = @neighborhoodId
+                     SELECT Walker.Id, Walker.[Name], ImageUrl, NeighborhoodId, Duration AS WalkDuration, Neighborhood.Name AS NeighborhoodName
+                     FROM Walker Left JOIN Neighborhood ON Walker.NeighborhoodId = Neighborhood.Id
+                     JOIN Walks ON Walks.WalkerId = Walker.Id
+                     WHERE NeighborhoodId = @neighborhoodId
             ";
 
                     cmd.Parameters.AddWithValue("@neighborhoodId", neighborhoodId);
@@ -125,7 +130,8 @@ namespace DogGo.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                            NeighborhoodName = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
+                            NeighborhoodName = reader.GetString(reader.GetOrdinal("NeighborhoodName")),
+                            WalkDuration = reader.GetInt32(reader.GetOrdinal("WalkDuration"))
                         };
 
                         walkers.Add(walker);
